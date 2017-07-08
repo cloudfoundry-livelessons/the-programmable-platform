@@ -46,7 +46,8 @@ class Restager {
                                   .applicationId(as.getId()).build()))
                 .filter(sar -> buildpack(sar.getBuildpack(), sar.getDetectedBuildpack())
                           .contains(this.buildpack))
-                .flatMap(as1 -> cf.applications().restage(RestageApplicationRequest.builder().name(as1.getName())
+                .flatMap(as1 -> cf.applications().restage(RestageApplicationRequest
+                                                             .builder().name(as1.getName())
                                         .build()))
                 .subscribe();
     }
