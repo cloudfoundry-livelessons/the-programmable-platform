@@ -42,13 +42,18 @@ class Restager {
                 .filter(ar -> ar.getRunningInstances() > 0)
                 .flatMap(as -> client
                         .applicationsV2()
-                        .summary(SummaryApplicationRequest.builder().applicationId(as.getId()).build()))
-                .filter(sar -> buildpack(sar.getBuildpack(), sar.getDetectedBuildpack()).contains(this.buildpack))
-                .flatMap(as1 -> cf.applications().restage(RestageApplicationRequest.builder().name(as1.getName()).build()))
+                        .summary(SummaryApplicationRequest.builder()
+                                  .applicationId(as.getId()).build()))
+                .filter(sar -> buildpack(sar.getBuildpack(), sar.getDetectedBuildpack())
+                          .contains(this.buildpack))
+                .flatMap(as1 -> cf.applications().restage(RestageApplicationRequest
+                                                             .builder().name(as1.getName())
+                                        .build()))
                 .subscribe();
     }
 
     private String buildpack(String bp, String dbp) {
-        return StringUtils.hasText(bp) ? bp : (StringUtils.hasText(dbp) ? dbp : "");
+        return StringUtils.hasText(bp) ? bp : 
+                (StringUtils.hasText(dbp) ? dbp : "");
     }
 }
